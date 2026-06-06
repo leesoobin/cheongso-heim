@@ -582,17 +582,14 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-10 items-start pb-10 border-b border-slate-700">
             {/* Brand */}
             <div>
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-9 h-9 bg-blue-700 rounded-xl flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3a9 9 0 00-9 9 9 9 0 009 9 9 9 0 009-9 9 9 0 00-9-9z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 12c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4" />
-                  </svg>
-                </div>
-                <div>
-                  <span className="block text-white text-lg font-bold leading-tight">청소하임</span>
-                  <span className="block text-slate-500 text-[10px] tracking-widest">CHEONGSO HEIM</span>
-                </div>
+              <div className="mb-4">
+                <Image
+                  src="/logo.jpeg"
+                  alt="청소하임 로고"
+                  width={140}
+                  height={48}
+                  className="h-10 w-auto object-contain brightness-0 invert"
+                />
               </div>
               <p className="text-sm leading-relaxed max-w-xs">
                 꼼꼼한 시공부터 사후관리까지,<br />

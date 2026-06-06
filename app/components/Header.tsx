@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 const navLinks = [
   { href: '#about',    label: '회사소개' },
@@ -36,19 +37,17 @@ export default function Header() {
         {/* Logo */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="flex items-center gap-2 group"
+          className="flex items-center group"
           aria-label="청소하임 홈"
         >
-          <div className="w-9 h-9 bg-blue-700 rounded-xl flex items-center justify-center shadow-sm">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3a9 9 0 00-9 9 9 9 0 009 9 9 9 0 009-9 9 9 0 00-9-9z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4" />
-            </svg>
-          </div>
-          <div className="leading-tight">
-            <span className="block text-lg font-bold text-blue-700 group-hover:text-blue-800 transition-colors">청소하임</span>
-            <span className="block text-[10px] text-slate-400 tracking-widest font-medium -mt-0.5">CHEONGSO HEIM</span>
-          </div>
+          <Image
+            src="/logo.jpeg"
+            alt="청소하임 로고"
+            width={140}
+            height={48}
+            className="h-10 w-auto object-contain"
+            priority
+          />
         </button>
 
         {/* Desktop Nav */}
