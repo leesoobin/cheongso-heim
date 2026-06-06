@@ -199,7 +199,7 @@ export default function Home() {
           </ScrollReveal>
 
           <ScrollReveal delay={120}>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white text-shadow leading-[1.1] mb-5">
+            <h1 className="text-[1.85rem] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white text-shadow leading-[1.15] mb-5">
               깨끗한 공간이<br />
               <span className="text-yellow-300">행복한 일상</span>을 만듭니다
             </h1>
