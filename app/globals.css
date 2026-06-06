@@ -3,83 +3,43 @@
 @tailwind utilities;
 
 html { scroll-behavior: smooth; }
-body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body {
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+}
 
-/* ── Scroll Reveal ──────────────────────────────────── */
+/* ── Scroll Reveal ── */
 .reveal {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1),
+              transform 0.75s cubic-bezier(0.16,1,0.3,1);
   will-change: opacity, transform;
 }
-.reveal.from-left  { transform: translateX(-44px) translateY(0); }
-.reveal.from-right { transform: translateX(44px)  translateY(0); }
-.reveal.scale-in   { transform: scale(0.93); }
-.reveal.active {
-  opacity: 1 !important;
-  transform: translate(0, 0) scale(1) !important;
-}
+.reveal.from-left  { transform: translateX(-36px); }
+.reveal.from-right { transform: translateX(36px); }
+.reveal.active { opacity: 1 !important; transform: translate(0,0) !important; }
 
-/* ── Ken Burns ──────────────────────────────────────── */
-@keyframes kb-in {
-  from { transform: scale(1.0)  translate(0,     0); }
-  to   { transform: scale(1.13) translate(-1.5%, -0.8%); }
-}
-@keyframes kb-out {
-  from { transform: scale(1.10) translate(1.5%,  0.8%); }
-  to   { transform: scale(1.0)  translate(0,     0); }
-}
+/* ── Ken Burns ── */
+@keyframes kb-in  { from{transform:scale(1.0) translate(0,0)} to{transform:scale(1.12) translate(-1.5%,-0.8%)} }
+@keyframes kb-out { from{transform:scale(1.08) translate(1.5%,0.8%)} to{transform:scale(1.0) translate(0,0)} }
 .kb-in  { animation: kb-in  10s ease-out forwards; }
 .kb-out { animation: kb-out 10s ease-out forwards; }
 
-/* ── Stat counter pulse ─────────────────────────────── */
-@keyframes pulse-once {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.06); }
+/* ── Section badges ── */
+.badge-orange {
+  display: inline-block;
+  font-size: 16px; font-weight: 600; color: #F46D3D;
+  letter-spacing: 0.02em; margin-bottom: 12px;
 }
-.stat-pulse { animation: pulse-once 0.4s ease-out; }
-
-/* ── Utilities ──────────────────────────────────────── */
-@layer utilities {
-  .text-shadow    { text-shadow: 0 2px 20px rgba(0,0,0,0.55); }
-  .text-shadow-sm { text-shadow: 0 1px 6px rgba(0,0,0,0.35); }
-
-  .section-badge {
-    @apply inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full
-           text-sm font-semibold tracking-widest uppercase mb-5;
-  }
-  .section-title {
-    @apply text-3xl md:text-4xl font-bold text-slate-900 leading-tight tracking-tight;
-  }
-  .section-sub {
-    @apply text-slate-500 text-lg mt-4 leading-relaxed;
-  }
-
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2
-           bg-blue-700 hover:bg-blue-800 active:scale-95
-           text-white font-semibold px-7 py-3.5 rounded-xl
-           transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer;
-  }
-  .btn-orange {
-    @apply inline-flex items-center justify-center gap-2
-           bg-orange-500 hover:bg-orange-600 active:scale-95
-           text-white font-semibold px-7 py-3.5 rounded-xl
-           transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer;
-  }
-  .card {
-    @apply bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg
-           transition-all duration-300 border border-slate-100;
-  }
+.badge-blue {
+  display: inline-flex; align-items: center;
+  border: 1.5px solid #3159BC; color: #3159BC;
+  font-size: 13px; font-weight: 700;
+  padding: 4px 14px; border-radius: 4px;
+  letter-spacing: 0.08em; margin-bottom: 20px;
 }
 
-/* ── Reduced motion ─────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .kb-in, .kb-out, .stat-pulse {
-    animation: none !important;
-    transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
+  .reveal, .kb-in, .kb-out { animation:none!important; transition:none!important; opacity:1!important; transform:none!important; }
 }

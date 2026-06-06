@@ -1,182 +1,117 @@
 'use client'
 
 import Image from 'next/image'
-import Header from './components/Header'
+import Header    from './components/Header'
 import HeroStats from './components/HeroStats'
-import HeroSlideshow from './components/HeroSlideshow'
-import ContactForm from './components/ContactForm'
-import FloatingCTA from './components/FloatingCTA'
-import ScrollReveal from './components/ScrollReveal'
+import HeroSlideshow  from './components/HeroSlideshow'
+import ContactForm    from './components/ContactForm'
+import FloatingCTA    from './components/FloatingCTA'
+import ScrollReveal   from './components/ScrollReveal'
+import ReviewSlider   from './components/ReviewSlider'
 
-// ── Data ─────────────────────────────────────────────────────────────────────
+// ── COLORS (benchmark match) ────────────────────────────────
+const C = {
+  blue:   '#3159BC',
+  orange: '#F46D3D',
+  lime:   '#D5D62B',
+  dark:   '#070707',
+  body:   '#6E7A84',
+  nav:    '#25324B',
+  premiumBg: '#F4FFE3',
+  contactBg: '#D2E4F5',
+  footer: '#070707',
+}
 
-const services = [
+// ── DATA ────────────────────────────────────────────────────
+
+const SERVICES = [
   {
-    id: 'move-in',
-    badge: '입주 · 이사 청소',
-    title: '새 보금자리의 완벽한 시작',
-    desc: '분진가루, 시공먼지, 접착 잔여물, 몰딩 틈새 오염까지 고출력 흡입 장비와 다단계 필터링 시스템으로 꼼꼼하게 제거합니다. 이사 전·후 모두 가능합니다.',
-    tags: ['분진·먼지 제거', '몰딩틈새 세척', '고출력 흡입장비'],
+    id: 'move',
+    title: '입주 / 이사 청소',
+    desc: '새 공간의 시공 먼지, 분진, 접착 잔여물, 몰딩 틈새 오염을 고출력 흡입 장비와 다단계 필터링 시스템으로 꼼꼼하게 제거합니다. 이사 전·후 모두 가능합니다.',
     img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80',
-    imgAlt: '입주이사 청소',
     reverse: false,
   },
   {
     id: 'home',
-    badge: '가정 정기 청소',
-    title: '쾌적한 일상을 위한 꼼꼼한 관리',
-    desc: '주기적인 방문으로 항상 깨끗하고 건강한 생활 환경을 유지해 드립니다. 청소 빈도와 범위를 고객 맞춤으로 조정합니다.',
-    tags: ['주방·욕실 세척', '바닥·창문 청소', '맞춤형 주기 관리'],
+    title: '가정 정기 청소',
+    desc: '주기적인 방문으로 항상 깨끗하고 건강한 생활 환경을 유지해 드립니다. 주방, 욕실, 거실 등 생활 공간 전체를 고객 맞춤으로 관리합니다.',
     img: 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=900&q=80',
-    imgAlt: '가정 정기 청소',
     reverse: true,
   },
   {
     id: 'office',
-    badge: '사무실 · 상업공간 청소',
-    title: '비즈니스 환경의 품격을 높이다',
-    desc: '사무실, 매장, 식당, 병원 등 다양한 상업공간의 특성에 맞는 전문 청소 서비스. 업무 공간의 청결이 비즈니스 이미지를 결정합니다.',
-    tags: ['사무가구 세척', '바닥 코팅·광택', '영업시간 외 시공'],
+    title: '사무실 / 상업공간 청소',
+    desc: '사무실, 매장, 식당 등 다양한 상업공간의 특성에 맞는 전문 청소 서비스를 제공합니다. 영업시간 외 시공으로 업무에 지장 없이 진행합니다.',
     img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80',
-    imgAlt: '사무실 상업공간 청소',
     reverse: false,
   },
   {
     id: 'special',
-    badge: '특수 청소',
-    title: '눈에 보이지 않는 곳까지',
-    desc: '에어컨 세척, 곰팡이·니코틴 특수 제거, 새집증후군 시공, 소독·방역 등 일반 청소로 해결하기 어려운 전문 영역을 담당합니다.',
-    tags: ['에어컨 세척', '곰팡이·소독', '새집증후군 시공'],
+    title: '특수 청소',
+    desc: '에어컨 세척, 곰팡이·니코틴 특수 제거, 새집증후군 시공, 소독·방역 등 일반 청소로 해결하기 어려운 전문 영역까지 책임집니다.',
     img: 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=900&q=80',
-    imgAlt: '에어컨 곰팡이 특수청소',
     reverse: true,
   },
 ]
 
-const features = [
+const PREMIUM = [
   {
-    icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>,
-    title: '대표 직접 상담 & 운영',
-    desc: '중간 유통 없이 대표가 직접 상담부터 시공, 관리 전 과정을 책임집니다.',
+    title: '새집증후군 시공',
+    desc: '베이크아웃, 차폐 시공으로 포름알데히드·라돈 등 유해물질을 제거하고 공기질 측정까지 완료합니다. 건강한 새 집에서 출발하세요.',
+    img: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=700&q=80',
   },
   {
-    icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>,
-    title: '100% 직영팀 시공',
-    desc: '하청 없이 철저히 교육된 직영팀만 투입하여 일관된 품질을 보장합니다.',
-  },
-  {
-    icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>,
-    title: '친환경 저자극 약품',
-    desc: '인체에 무해한 친환경·저자극 세제만 사용합니다. 어린이·반려동물도 안심하세요.',
-  },
-  {
-    icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
-    title: '배상책임보험 가입',
-    desc: '시공 중 발생하는 모든 사고를 보험으로 완벽하게 보장합니다.',
-  },
-  {
-    icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>,
-    title: '꼼꼼한 사전 점검',
-    desc: '시공 전 현장을 직접 방문하여 맞춤 견적과 최적 시공 계획을 세웁니다.',
-  },
-  {
-    icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>,
-    title: '철저한 사후관리',
-    desc: '시공 완료 후 고객이 완전히 만족하실 때까지 책임지고 마무리합니다.',
+    title: '벽면 집진 시공',
+    desc: '공식 헤파필터 장착 컬비 장비로 벽면부터 천장까지 미세분진을 완전 제거합니다. 눈에 보이지 않는 먼지까지 책임집니다.',
+    img: 'https://images.unsplash.com/photo-1484154218791-d3b6498ca4a1?auto=format&fit=crop&w=700&q=80',
   },
 ]
 
-const processSteps = [
-  {
-    step: '01',
-    icon: <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>,
-    title: '무료 상담 신청',
-    desc: '전화 또는 홈페이지 문의 폼으로 간편하게 무료 상담을 신청하세요.',
-  },
-  {
-    step: '02',
-    icon: <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>,
-    title: '현장 방문 견적',
-    desc: '대표가 직접 현장을 방문하여 꼼꼼하게 확인 후 정확한 견적을 안내드립니다.',
-  },
-  {
-    step: '03',
-    icon: <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>,
-    title: '전문팀 시공',
-    desc: '100% 직영팀이 친환경 장비와 세제로 구석구석 꼼꼼하게 시공합니다.',
-  },
-  {
-    step: '04',
-    icon: <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>,
-    title: '완료 & 사후관리',
-    desc: '시공 완료 후 최종 점검으로 고객 만족을 확인하고 사후 관리까지 책임집니다.',
-  },
+const MERITS = [
+  { icon: personIcon(),  title: '대표 직접 상담 & 운영',    desc: '중간 유통 없이 대표가 직접 상담부터 시공, 관리 전 과정을 책임집니다.' },
+  { icon: teamIcon(),    title: '100% 직영팀 시공',        desc: '하청 없이 철저히 교육된 직영팀만 투입하여 일관된 품질을 보장합니다.' },
+  { icon: searchIcon(),  title: '보이지 않는 곳까지 꼼꼼하게', desc: '구석진 곳, 틈새, 천장 등 일반적으로 놓치기 쉬운 부분까지 확인합니다.' },
+  { icon: leafIcon(),    title: '친환경 & 저자극 약품 사용', desc: '인체에 무해한 친환경 세제만 사용합니다. 어린이·반려동물도 안심하세요.' },
+  { icon: shieldIcon(),  title: '영업배상책임보험 가입',    desc: '시공 중 발생하는 모든 사고에 대해 보험으로 완벽하게 보장합니다.' },
+  { icon: starIcon(),    title: '사후관리까지 확실하게',    desc: '시공 완료 후 고객이 완전히 만족하실 때까지 책임지고 마무리합니다.' },
 ]
 
-const cases = [
-  {
-    title: '아파트 33평 입주 청소',
-    tag: '입주 청소',
-    desc: '신규 입주 전 시공 먼지·분진·접착 잔여물 전체 제거',
-    img: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    title: '주방 기름때·탄화물 제거',
-    tag: '주방 청소',
-    desc: '환기구 세척, 인덕션·가스레인지 분해 후 재조립 완료',
-    img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    title: '욕실 물때·곰팡이 완전 제거',
-    tag: '욕실 청소',
-    desc: '줄눈 곰팡이 전문 제거, 유리·타일 물때 세척 완료',
-    img: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    title: '사무실 50평 바닥 광택 복원',
-    tag: '사무실 청소',
-    desc: '바닥 코팅 전처리 후 헤비 UV 광택 시공 완료',
-    img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    title: '에어컨 내부 곰팡이 세척',
-    tag: '에어컨 청소',
-    desc: '필터·코일·배수판 분리 세척, 냄새 및 균 완전 제거',
-    img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    title: '거실·창문 전체 청소',
-    tag: '가정 청소',
-    desc: '창문 안팎·블라인드·몰딩 구석까지 꼼꼼하게 세척',
-    img: 'https://images.unsplash.com/photo-1484154218791-d3b6498ca4a1?auto=format&fit=crop&w=900&q=80',
-  },
+const REVIEWS = [
+  { name: '이○○', service: '입주 청소',    area: '아파트 33평', rating: 5, text: '이사 후 정말 더러운 상태였는데 청소하임 덕분에 새 집처럼 깨끗해졌어요! 대표님이 직접 오셔서 꼼꼼하게 확인해 주시는 모습이 정말 믿음직했습니다.' },
+  { name: '박○○', service: '가정 정기 청소', area: '빌라 25평',  rating: 5, text: '3개월째 정기 청소를 맡기고 있는데 매번 너무 만족스러워요. 처음에 꼼꼼하게 해주시는 거 보고 감탄했는데 지금도 한결같이 완벽하게 해주십니다.' },
+  { name: '최○○', service: '사무실 청소',   area: '사무실 50평', rating: 5, text: '직원들이 모두 깜짝 놀랄 만큼 깨끗하게 해주셨어요. 영업시간 외에 작업해 주셔서 업무에 전혀 지장이 없었습니다.' },
+  { name: '김○○', service: '특수 청소',    area: '아파트 27평', rating: 5, text: '곰팡이 문제로 고민이 많았는데 한 번에 해결됐습니다. 약품 냄새도 없고 아이들도 바로 들어올 수 있어서 너무 좋았어요.' },
+  { name: '정○○', service: '입주 청소',    area: '오피스텔',    rating: 5, text: '새집인데 시공 먼지가 가득해서 걱정이었는데 청소하임에서 싹 다 정리해주셨어요. 광택도 나고 정말 새것처럼 됐습니다.' },
+  { name: '윤○○', service: '에어컨 청소',  area: '3베이 아파트', rating: 5, text: '에어컨에서 냄새가 나서 연락했는데 분해 세척 후 완전히 깨끗해졌어요. 전문 장비로 꼼꼼하게 해주셔서 감사합니다.' },
 ]
 
-const reviews = [
-  {
-    name: '이○○',
-    service: '입주 청소',
-    area: '아파트 33평',
-    rating: 5,
-    text: '이사 후 정말 더러운 상태였는데 청소하임 덕분에 새 집처럼 깨끗해졌어요! 대표님이 직접 오셔서 꼼꼼하게 확인해 주시는 모습이 정말 믿음직했습니다. 다음에도 꼭 부르겠습니다.',
-  },
-  {
-    name: '박○○',
-    service: '가정 정기 청소',
-    area: '빌라 25평',
-    rating: 5,
-    text: '3개월째 정기 청소를 맡기고 있는데 매번 너무 만족스러워요. 처음에 꼼꼼하게 해주시는 거 보고 감탄했는데 지금도 한결같이 완벽하게 해주십니다. 가격도 합리적이에요!',
-  },
-  {
-    name: '최○○',
-    service: '사무실 청소',
-    area: '사무실 50평',
-    rating: 5,
-    text: '직원들이 모두 깜짝 놀랄 만큼 깨끗하게 해주셨어요. 영업시간 외에 작업해 주셔서 업무에 전혀 지장이 없었고, 사무실 분위기가 확 달라져서 정말 만족합니다.',
-  },
+const CASES = [
+  { title: '아파트 33평 입주 청소',  tag: '입주 청소',  desc: '시공 먼지·접착 잔여물 전체 제거 완료',      img: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80' },
+  { title: '주방 기름때·탄화물 제거', tag: '주방 청소',  desc: '환기구 세척·인덕션 분해 후 재조립 완료',    img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&q=80' },
+  { title: '욕실 물때·곰팡이 완전 제거', tag: '욕실 청소', desc: '줄눈 곰팡이·유리 물때 세척 완료',          img: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=900&q=80' },
+  { title: '사무실 50평 바닥 광택',  tag: '사무실 청소', desc: '바닥 코팅 전처리·헤비 UV 광택 시공',        img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80' },
+  { title: '에어컨 내부 곰팡이 세척', tag: '에어컨 청소', desc: '필터·코일 분리 세척, 균·냄새 완전 제거',    img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=80' },
+  { title: '거실·창문 전체 청소',    tag: '가정 청소',   desc: '창문 안팎·블라인드·몰딩 구석 세척 완료',    img: 'https://images.unsplash.com/photo-1484154218791-d3b6498ca4a1?auto=format&fit=crop&w=900&q=80' },
 ]
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── ICON HELPERS ────────────────────────────────────────────
+
+function SvgIcon({ d }: { d: string }) {
+  return (
+    <svg width="38" height="38" fill="none" viewBox="0 0 24 24" stroke={C.blue} strokeWidth={1.7}>
+      <path strokeLinecap="round" strokeLinejoin="round" d={d} />
+    </svg>
+  )
+}
+function personIcon() { return <SvgIcon d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /> }
+function teamIcon()   { return <SvgIcon d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /> }
+function searchIcon() { return <SvgIcon d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /> }
+function leafIcon()   { return <SvgIcon d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /> }
+function shieldIcon() { return <SvgIcon d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /> }
+function starIcon()   { return <SvgIcon d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /> }
+
+// ── PAGE ────────────────────────────────────────────────────
 
 export default function Home() {
   return (
@@ -184,378 +119,341 @@ export default function Home() {
       <Header />
       <FloatingCTA />
 
-      {/* ────────────────────────────────────────────────────────
+      {/* ═══════════════════════════════════════════════════════
           1. HERO
-      ──────────────────────────────────────────────────────── */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center text-center overflow-hidden">
+      ═══════════════════════════════════════════════════════ */}
+      <section id="home" style={{ position: 'relative', minHeight: '825px', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
         <HeroSlideshow />
 
-        <div className="relative z-20 max-w-4xl mx-auto px-5 pt-28 pb-16">
+        <div className="relative z-20 w-full max-w-[1140px] mx-auto px-5" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
+
+          {/* Badge */}
           <ScrollReveal delay={0}>
-            <span className="inline-flex items-center gap-2 px-5 py-2 bg-white/10 backdrop-blur-sm text-blue-100 text-sm font-semibold rounded-full tracking-widest border border-white/20 mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-300 animate-pulse" />
-              100% 직영 청소 전문업체
-            </span>
-          </ScrollReveal>
-
-          <ScrollReveal delay={120}>
-            <h1 className="text-[1.85rem] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white text-shadow leading-[1.15] mb-5">
-              깨끗한 공간이<br />
-              <span className="text-yellow-300">행복한 일상</span>을 만듭니다
-            </h1>
-          </ScrollReveal>
-
-          <ScrollReveal delay={240}>
-            <p className="text-lg sm:text-xl md:text-2xl text-blue-100 leading-relaxed font-medium mb-10">
-              대표가 직접 상담부터 시공, 사후관리까지<br className="hidden sm:block" />
-              모든 과정을 책임지는 <span className="text-white font-bold">청소하임</span>입니다
+            <p style={{ fontSize: '24px', fontWeight: 500, color: 'rgba(248,252,252,0.9)', marginBottom: '12px' }}>
+              청소전문업체, 청소하임
             </p>
           </ScrollReveal>
 
-          <ScrollReveal delay={360}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#contact" className="btn-orange text-base sm:text-lg px-10 py-4 font-bold shadow-2xl">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
-                </svg>
-                무료 상담 신청
-              </a>
-              <a href="tel:010-0000-0000" className="inline-flex items-center justify-center gap-2.5 bg-white/12 hover:bg-white/22 backdrop-blur-sm text-white font-semibold text-base sm:text-lg px-10 py-4 rounded-xl transition-all duration-200 border border-white/25">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                </svg>
-                010-0000-0000
-              </a>
+          {/* Headline */}
+          <ScrollReveal delay={120}>
+            <h1 style={{ fontSize: 'clamp(28px, 4vw, 47px)', fontWeight: 600, color: C.lime, lineHeight: 1.25, marginBottom: '8px' }}>
+              청소하임
+            </h1>
+            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 47px)', fontWeight: 600, color: '#fff', lineHeight: 1.3, marginBottom: '14px' }}>
+              "신뢰를 바탕으로 운영합니다"
+            </h2>
+            <p style={{ fontSize: 'clamp(15px, 1.8vw, 22px)', fontWeight: 500, color: 'rgba(248,252,252,0.85)', marginBottom: '40px' }}>
+              대표책임운영 · 투명한 시공 · 합리적인 금액
+            </p>
+          </ScrollReveal>
+
+          {/* Stats box */}
+          <ScrollReveal delay={240}>
+            <div style={{ background: 'rgba(51,93,128,0.5)', borderRadius: '24px', padding: '24px 10px', display: 'inline-flex', gap: '40px', marginBottom: '40px', flexWrap: 'wrap' }}>
+              <HeroStats />
             </div>
           </ScrollReveal>
 
-          <ScrollReveal delay={500}>
-            <HeroStats />
-          </ScrollReveal>
-        </div>
-
-        {/* scroll hint */}
-        <a href="#about" className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 text-white/50 hover:text-white/80 transition-colors cursor-pointer">
-          <span className="text-[11px] tracking-widest uppercase font-medium">Scroll</span>
-          <svg className="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </a>
-      </section>
-
-      {/* ────────────────────────────────────────────────────────
-          2. ABOUT
-      ──────────────────────────────────────────────────────── */}
-      <section id="about" className="py-20 md:py-28 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-            {/* Image */}
-            <ScrollReveal from="left">
-              <div className="relative">
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
-                  <Image
-                    src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80"
-                    alt="청소하임 전문 청소 서비스"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-                {/* floating badge */}
-                <div className="absolute -bottom-5 -right-4 md:-right-6 bg-blue-700 text-white rounded-2xl px-6 py-5 shadow-xl text-center">
-                  <p className="text-3xl font-extrabold leading-none">10년+</p>
-                  <p className="text-blue-200 text-sm font-medium mt-1">업력</p>
-                </div>
-                {/* decorative ring */}
-                <div className="absolute -top-4 -left-4 w-24 h-24 rounded-full border-4 border-blue-100 opacity-60" />
-              </div>
-            </ScrollReveal>
-
-            {/* Text */}
-            <ScrollReveal from="right">
-              <span className="section-badge">ABOUT US</span>
-              <h2 className="section-title mb-5">
-                대표가 직접 책임지는<br />
-                <span className="text-blue-700">청소하임</span>을 소개합니다
-              </h2>
-              <p className="text-slate-600 leading-relaxed text-lg mb-8">
-                청소하임은{' '}
-                <strong className="text-orange-500">
-                  대표가 상담부터 시공, 사후관리까지 전 과정을 직접 관리
-                </strong>
-                하는 100% 직영 청소 전문업체입니다. 하청 없이 검증된 직영팀만이 시공하기 때문에
-                일관된 품질과 철저한 책임 관리가 가능합니다.
-              </p>
-
-              <div className="grid grid-cols-2 gap-3 mb-8">
-                {[
-                  { label: '대표 직접 운영', sub: '중간 유통 없음', color: 'bg-blue-50 border-blue-100' },
-                  { label: '직영팀 시공',    sub: '하청 없는 품질', color: 'bg-blue-50 border-blue-100' },
-                  { label: '친환경 약품',    sub: '인체 무해 세제', color: 'bg-green-50 border-green-100' },
-                  { label: '보험 가입',      sub: '사고 완벽 보장', color: 'bg-orange-50 border-orange-100' },
-                ].map(item => (
-                  <div key={item.label} className={`flex flex-col gap-0.5 rounded-xl px-4 py-3 border ${item.color}`}>
-                    <span className="text-sm font-bold text-slate-800">{item.label}</span>
-                    <span className="text-xs text-slate-500">{item.sub}</span>
-                  </div>
-                ))}
-              </div>
-
-              <a href="#contact" className="btn-primary">
-                무료 상담 신청하기
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                </svg>
-              </a>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ────────────────────────────────────────────────────────
-          3. SERVICES
-      ──────────────────────────────────────────────────────── */}
-      <section id="services" className="py-20 md:py-28 bg-slate-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          <ScrollReveal className="text-center mb-16 md:mb-20">
-            <span className="section-badge">SERVICES</span>
-            <h2 className="section-title">청소하임 전문 서비스</h2>
-            <p className="section-sub max-w-xl mx-auto">
-              어떤 공간이든, 어떤 상황이든 청소하임이 완벽하게 해결해 드립니다
-            </p>
-          </ScrollReveal>
-
-          <div className="space-y-20 md:space-y-28">
-            {services.map((svc, i) => (
-              <div
-                key={svc.id}
-                className={`grid md:grid-cols-2 gap-10 lg:gap-16 items-center ${svc.reverse ? 'md:[&>*:first-child]:order-2' : ''}`}
-              >
-                {/* Image */}
-                <ScrollReveal from={svc.reverse ? 'right' : 'left'}>
-                  <div className="group relative rounded-2xl overflow-hidden shadow-xl">
-                    <div className="aspect-[4/3] relative">
-                      <Image
-                        src={svc.img}
-                        alt={svc.imgAlt}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      {/* bottom gradient for depth */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent" />
-                    </div>
-                    {/* badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className="inline-block bg-blue-700/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg">
-                        {svc.badge}
-                      </span>
-                    </div>
-                    {/* hover shine */}
-                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300" />
-                  </div>
-                </ScrollReveal>
-
-                {/* Text */}
-                <ScrollReveal from={svc.reverse ? 'left' : 'right'} delay={150}>
-                  <div>
-                    <span className="section-badge">{svc.badge}</span>
-                    <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 leading-tight">{svc.title}</h3>
-                    <p className="text-slate-600 leading-relaxed text-lg mb-6">{svc.desc}</p>
-                    <div className="flex flex-wrap gap-2 mb-8">
-                      {svc.tags.map(tag => (
-                        <span key={tag} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-100 text-blue-700 text-sm font-medium rounded-lg shadow-sm hover:bg-blue-50 transition-colors">
-                          <svg className="w-3.5 h-3.5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                          </svg>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <a href="#contact" className="btn-primary">
-                      상담 신청하기
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                      </svg>
-                    </a>
-                  </div>
-                </ScrollReveal>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ────────────────────────────────────────────────────────
-          4. WHY US
-      ──────────────────────────────────────────────────────── */}
-      <section id="why-us" className="py-20 md:py-28 bg-slate-900 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          <ScrollReveal className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 bg-blue-700/25 text-blue-300 rounded-full text-sm font-semibold tracking-widest uppercase mb-5">
-              WHY CHEONGSO HEIM
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
-              왜 청소하임인가요?
-            </h2>
-            <p className="text-slate-400 text-lg mt-4 max-w-xl mx-auto">
-              수천 건의 시공 경험으로 쌓아온 청소하임만의 차별점을 확인해보세요
-            </p>
-          </ScrollReveal>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-            {features.map((f, i) => (
-              <ScrollReveal key={i} delay={i * 80} from="scale">
-                <div className="group bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 hover:border-blue-500/60 rounded-2xl p-7 transition-all duration-300 cursor-default h-full">
-                  <div className="w-14 h-14 bg-blue-700/15 group-hover:bg-blue-700 rounded-xl flex items-center justify-center text-blue-400 group-hover:text-white transition-all duration-300 mb-5">
-                    {f.icon}
-                  </div>
-                  <h3 className="text-[17px] font-bold text-white mb-2.5 leading-snug">{f.title}</h3>
-                  <p className="text-slate-400 leading-relaxed text-sm">{f.desc}</p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ────────────────────────────────────────────────────────
-          5. PROCESS
-      ──────────────────────────────────────────────────────── */}
-      <section id="process" className="py-20 md:py-28 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          <ScrollReveal className="text-center mb-14">
-            <span className="section-badge">PROCESS</span>
-            <h2 className="section-title">간단한 4단계 이용 방법</h2>
-            <p className="section-sub max-w-xl mx-auto">
-              전화 한 통으로 시작해서 완벽한 청소 완료까지, 청소하임이 모든 걸 책임집니다
-            </p>
-          </ScrollReveal>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 relative">
-            {/* connecting line — desktop */}
-            <div className="hidden lg:block absolute top-[52px] left-[calc(12.5%+16px)] right-[calc(12.5%+16px)] h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent z-0 pointer-events-none" />
-
-            {processSteps.map((step, i) => (
-              <ScrollReveal key={i} delay={i * 100} className="relative z-10 text-center">
-                <div className="group relative inline-flex mb-5">
-                  <div className="w-[72px] h-[72px] bg-blue-50 group-hover:bg-blue-700 border-2 border-blue-200 group-hover:border-blue-700 rounded-2xl flex items-center justify-center text-blue-600 group-hover:text-white transition-all duration-300 shadow-sm mx-auto">
-                    {step.icon}
-                  </div>
-                  <span className="absolute -top-2 -right-2 w-6 h-6 bg-blue-700 text-white rounded-full text-[10px] font-extrabold flex items-center justify-center shadow-md">
-                    {step.step}
-                  </span>
-                </div>
-                <h3 className="text-[17px] font-bold text-slate-900 mb-2">{step.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{step.desc}</p>
-              </ScrollReveal>
-            ))}
-          </div>
-
-          <ScrollReveal className="text-center mt-14" delay={400}>
-            <a href="#contact" className="btn-orange text-base sm:text-lg px-12 py-4">
-              지금 바로 시작하기
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-              </svg>
+          {/* CTA */}
+          <ScrollReveal delay={360}>
+            <a
+              href="#contact"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: C.blue, color: '#fff', padding: '15px 40px', borderRadius: '23px', fontSize: '18px', fontWeight: 500, textDecoration: 'none', boxShadow: '0 4px 20px rgba(49,89,188,0.4)' }}
+              className="hover:opacity-90 transition-opacity"
+            >
+              바로 상담하기
             </a>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* ────────────────────────────────────────────────────────
-          6. CASES (시공사례)
-      ──────────────────────────────────────────────────────── */}
-      <section id="cases" className="py-20 md:py-28 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ═══════════════════════════════════════════════════════
+          2. ABOUT
+      ═══════════════════════════════════════════════════════ */}
+      <section id="about" style={{ background: '#fff', padding: '100px 0', overflow: 'hidden' }}>
+        <div className="max-w-[1140px] mx-auto px-5">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
 
-          <ScrollReveal className="text-center mb-14">
-            <span className="section-badge">CASES</span>
-            <h2 className="section-title">청소하임 시공사례</h2>
-            <p className="section-sub max-w-xl mx-auto">
-              직접 시공한 현장의 전·후를 확인해보세요
-            </p>
+            <ScrollReveal from="left">
+              <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', aspectRatio: '4/3' }}>
+                <Image
+                  src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80"
+                  alt="청소하임 전문 청소"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal from="right">
+              <p className="badge-orange">ABOUT</p>
+              <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 700, color: C.dark, lineHeight: 1.25, marginBottom: '20px' }}>
+                청소하임 소개
+              </h2>
+              <p style={{ fontSize: '18px', color: C.dark, lineHeight: 1.85, marginBottom: '16px' }}>
+                청소하임은{' '}
+                <strong style={{ color: C.orange }}>
+                  대표가 상담부터 시공까지 직접 관리하는 100% 직영 청소전문업체
+                </strong>
+                입니다.
+              </p>
+              <p style={{ fontSize: '18px', color: C.dark, lineHeight: 1.85, marginBottom: '16px' }}>
+                하청 없이 검증된 직영팀만이 시공하기 때문에 일관된 품질과
+                철저한 책임 관리가 가능합니다.
+              </p>
+              <p style={{ fontSize: '18px', color: C.dark, lineHeight: 1.85, marginBottom: '32px' }}>
+                청소의 어려움을 누구보다 잘 알기에, 청렴하고 신뢰할 수 있는
+                청소하임이 함께하겠습니다.
+              </p>
+
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                {['대표 직접 운영', '직영팀 시공', '친환경 약품', '보험 가입'].map(t => (
+                  <span key={t} style={{ border: `1.5px solid ${C.blue}`, color: C.blue, fontSize: '14px', fontWeight: 600, padding: '6px 16px', borderRadius: '6px' }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          3. SERVICES (BASIC)
+      ═══════════════════════════════════════════════════════ */}
+      <section id="services" style={{ background: '#fff', padding: '80px 0 60px', overflow: 'hidden' }}>
+        <div className="max-w-[1140px] mx-auto px-5">
+
+          <ScrollReveal className="text-center mb-12">
+            <p className="badge-blue">BASIC</p>
+            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', fontWeight: 700, color: C.dark, lineHeight: 1.25 }}>
+              청소하임 대표서비스
+            </h2>
           </ScrollReveal>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-            {cases.map((c, i) => (
-              <ScrollReveal key={i} delay={i * 80} from="scale">
-                <div className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 hover:border-blue-100">
-                  {/* Before / After image split */}
-                  <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
-                    {/* BEFORE — left half (desaturated + dark) */}
-                    <div
-                      className="absolute inset-0"
-                      style={{ clipPath: 'inset(0 50% 0 0)' }}
-                    >
-                      <Image
-                        src={c.img}
-                        alt={`${c.title} 시공 전`}
-                        fill
-                        className="object-cover grayscale brightness-[0.65] contrast-[0.9]"
-                      />
-                      <div className="absolute inset-0 bg-slate-900/15" />
-                    </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {SERVICES.map((svc, i) => (
+              <div key={svc.id}>
+                {/* ─ DESKTOP: overlap layout ─ */}
+                <div
+                  className="hidden md:flex items-center"
+                  style={{ position: 'relative', minHeight: '400px', flexDirection: svc.reverse ? 'row-reverse' : 'row' }}
+                >
+                  {/* Image — absolute, fills its side */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      [svc.reverse ? 'right' : 'left']: 0,
+                      top: 0, bottom: 0,
+                      width: '48%',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <Image src={svc.img} alt={svc.title} fill className="object-cover hover:scale-105 transition-transform duration-700" />
+                  </div>
 
-                    {/* AFTER — right half (clean & vibrant) */}
-                    <div
-                      className="absolute inset-0"
-                      style={{ clipPath: 'inset(0 0 0 50%)' }}
-                    >
-                      <Image
-                        src={c.img}
-                        alt={`${c.title} 시공 후`}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                    </div>
+                  {/* Text card — overlaps image */}
+                  <div
+                    style={{
+                      position: 'relative',
+                      zIndex: 1,
+                      marginLeft: svc.reverse ? 0 : 'auto',
+                      marginRight: svc.reverse ? 'auto' : 0,
+                      width: '60%',
+                      background: '#fff',
+                      boxShadow: '0 8px 40px rgba(0,0,0,0.12)',
+                      borderRadius: '12px',
+                      padding: '60px 70px',
+                    }}
+                  >
+                    <ScrollReveal from={svc.reverse ? 'left' : 'right'} delay={i * 80}>
+                      <h3 style={{ fontSize: '26px', fontWeight: 700, color: C.nav, marginBottom: '16px' }}>{svc.title}</h3>
+                      <p style={{ fontSize: '17px', color: `rgba(37,50,75,0.75)`, lineHeight: 1.8, marginBottom: '28px' }}>{svc.desc}</p>
+                      <a href="#contact" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: C.blue, color: '#fff', padding: '12px 28px', borderRadius: '8px', fontSize: '15px', fontWeight: 600, textDecoration: 'none' }} className="hover:opacity-90 transition-opacity">
+                        상담 신청하기 →
+                      </a>
+                    </ScrollReveal>
+                  </div>
+                </div>
 
-                    {/* BEFORE label */}
-                    <div className="absolute top-3 left-3 z-10">
-                      <span className="bg-slate-700/80 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow">
-                        시공 전
-                      </span>
-                    </div>
+                {/* ─ MOBILE: stacked layout ─ */}
+                <div className="md:hidden rounded-2xl overflow-hidden shadow-md">
+                  <div style={{ position: 'relative', aspectRatio: '16/9' }}>
+                    <Image src={svc.img} alt={svc.title} fill className="object-cover" />
+                  </div>
+                  <div style={{ background: '#fff', padding: '28px 24px' }}>
+                    <h3 style={{ fontSize: '20px', fontWeight: 700, color: C.nav, marginBottom: '10px' }}>{svc.title}</h3>
+                    <p style={{ fontSize: '15px', color: `rgba(37,50,75,0.75)`, lineHeight: 1.8, marginBottom: '20px' }}>{svc.desc}</p>
+                    <a href="#contact" style={{ display: 'inline-block', background: C.blue, color: '#fff', padding: '11px 24px', borderRadius: '8px', fontSize: '14px', fontWeight: 600, textDecoration: 'none' }}>
+                      상담 신청하기 →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                    {/* AFTER label */}
-                    <div className="absolute top-3 right-3 z-10">
-                      <span className="bg-green-500/90 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow">
-                        시공 후
-                      </span>
-                    </div>
+      {/* ═══════════════════════════════════════════════════════
+          4. PREMIUM SERVICE
+      ═══════════════════════════════════════════════════════ */}
+      <section id="premium" style={{ background: C.premiumBg, padding: '80px 0', overflow: 'hidden' }}>
+        <div className="max-w-[1140px] mx-auto px-5">
 
+          <ScrollReveal className="text-center mb-12">
+            <p style={{ fontSize: '14px', fontWeight: 600, color: C.body, marginBottom: '10px', letterSpacing: '0.1em' }}>
+              청소하임의 고급 클린서비스
+            </p>
+            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', fontWeight: 700, color: C.dark }}>
+              Premium Service
+            </h2>
+          </ScrollReveal>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+            {PREMIUM.map((p, i) => (
+              <div key={i} className={`grid md:grid-cols-2 gap-8 md:gap-12 items-center ${i % 2 === 1 ? 'md:[&>*:first-child]:order-2' : ''}`}>
+                <ScrollReveal from={i % 2 === 1 ? 'right' : 'left'}>
+                  <div style={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: '4/3', position: 'relative' }}>
+                    <Image src={p.img} alt={p.title} fill className="object-cover hover:scale-105 transition-transform duration-700" />
+                  </div>
+                </ScrollReveal>
+                <ScrollReveal from={i % 2 === 1 ? 'left' : 'right'} delay={100}>
+                  <div style={{ background: '#fff', borderRadius: '16px', padding: '40px', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
+                    <span style={{ display: 'inline-block', background: '#E8F5E9', color: '#2E7D32', fontSize: '12px', fontWeight: 700, padding: '4px 12px', borderRadius: '20px', marginBottom: '16px', letterSpacing: '0.05em' }}>
+                      PREMIUM
+                    </span>
+                    <h3 style={{ fontSize: '24px', fontWeight: 700, color: C.nav, marginBottom: '14px' }}>{p.title}</h3>
+                    <p style={{ fontSize: '17px', color: `rgba(37,50,75,0.75)`, lineHeight: 1.8 }}>{p.desc}</p>
+                  </div>
+                </ScrollReveal>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          5. MERITS
+      ═══════════════════════════════════════════════════════ */}
+      <section
+        id="merits"
+        style={{
+          position: 'relative',
+          padding: '80px 0',
+          backgroundImage: 'url(https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1920&q=60)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Dark overlay */}
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,20,40,0.82)' }} />
+
+        <div className="relative z-10 max-w-[1140px] mx-auto px-5">
+          <ScrollReveal className="mb-12">
+            <p className="badge-orange">MERITS</p>
+            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 50px)', fontWeight: 700, color: '#fff' }}>
+              왜 청소하임인가요?
+            </h2>
+          </ScrollReveal>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-0">
+            {MERITS.map((m, i) => (
+              <ScrollReveal key={i} delay={i * 80}>
+                <div
+                  style={{ background: '#fff', padding: '36px 30px', borderRadius: 0, border: '1px solid rgba(255,255,255,0.1)' }}
+                  className="hover:bg-slate-50 transition-colors"
+                >
+                  {/* Icon circle */}
+                  <div style={{ width: 80, height: 80, borderRadius: '50%', border: `2px solid ${C.blue}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px', background: `${C.blue}08` }}>
+                    {m.icon}
+                  </div>
+                  <h4 style={{ fontSize: '20px', fontWeight: 700, color: C.dark, marginBottom: '10px' }}>{m.title}</h4>
+                  <p style={{ fontSize: '16px', color: C.body, lineHeight: 1.75 }}>{m.desc}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          6. REVIEWS
+      ═══════════════════════════════════════════════════════ */}
+      <section id="reviews" style={{ background: '#fff', padding: '100px 0', overflow: 'hidden' }}>
+        <div className="max-w-[1140px] mx-auto px-5">
+          <ScrollReveal className="mb-12">
+            <p className="badge-orange">REVIEWS</p>
+            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', fontWeight: 700, color: C.dark, lineHeight: 1.2 }}>
+              검증된 업체 청소하임
+            </h2>
+            <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 48px)', fontWeight: 600, color: C.blue }}>
+              100% 실제 후기
+            </h2>
+          </ScrollReveal>
+        </div>
+        <ReviewSlider items={REVIEWS} />
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          7. CASES
+      ═══════════════════════════════════════════════════════ */}
+      <section id="cases" style={{ background: '#FAFBFC', padding: '80px 0', overflow: 'hidden' }}>
+        <div className="max-w-[1140px] mx-auto px-5">
+
+          <ScrollReveal className="text-center mb-12">
+            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', fontWeight: 700, color: C.dark, marginBottom: '8px' }}>
+              청소하임 시공사례
+            </h2>
+            <p style={{ fontSize: '18px', color: C.body }}>직접 시공한 현장의 전·후를 확인하세요</p>
+          </ScrollReveal>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {CASES.map((c, i) => (
+              <ScrollReveal key={i} delay={i * 70}>
+                <div style={{ borderRadius: '16px', overflow: 'hidden', background: '#fff', boxShadow: '0 2px 16px rgba(0,0,0,0.07)', border: '1px solid #f1f5f9' }} className="group hover:shadow-xl transition-all duration-300">
+                  {/* Before/After split */}
+                  <div style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden' }}>
+                    {/* BEFORE (left) */}
+                    <div style={{ position: 'absolute', inset: 0, clipPath: 'inset(0 50% 0 0)' }}>
+                      <Image src={c.img} alt={`${c.title} 시공 전`} fill className="object-cover grayscale brightness-75" />
+                    </div>
+                    {/* AFTER (right) */}
+                    <div style={{ position: 'absolute', inset: 0, clipPath: 'inset(0 0 0 50%)' }}>
+                      <Image src={c.img} alt={`${c.title} 시공 후`} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                    </div>
+                    {/* Labels */}
+                    <span style={{ position: 'absolute', top: 10, left: 10, background: 'rgba(30,30,30,0.75)', color: '#fff', fontSize: '11px', fontWeight: 700, padding: '4px 10px', borderRadius: '5px', zIndex: 10 }}>시공 전</span>
+                    <span style={{ position: 'absolute', top: 10, right: 10, background: 'rgba(46,125,50,0.88)', color: '#fff', fontSize: '11px', fontWeight: 700, padding: '4px 10px', borderRadius: '5px', zIndex: 10 }}>시공 후</span>
                     {/* Divider */}
-                    <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 z-10 pointer-events-none flex flex-col items-center">
-                      <div className="w-px flex-1 bg-white/70" />
-                      <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-                        <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h8M8 12h8M8 17h8" />
+                    <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, transform: 'translateX(-50%)', width: 1, background: 'rgba(255,255,255,0.7)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <div style={{ width: 28, height: 28, background: '#fff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
+                        <svg width="14" height="14" fill="none" stroke="#555" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
                         </svg>
                       </div>
-                      <div className="w-px flex-1 bg-white/70" />
                     </div>
                   </div>
 
-                  {/* Card info */}
-                  <div className="p-5">
-                    <div className="flex items-start justify-between gap-3">
+                  <div style={{ padding: '18px 20px' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
                       <div>
-                        <p className="font-bold text-slate-900 text-[15px] leading-snug mb-1">{c.title}</p>
-                        <p className="text-slate-500 text-sm leading-relaxed">{c.desc}</p>
+                        <p style={{ fontWeight: 700, fontSize: '15px', color: C.dark, marginBottom: '4px' }}>{c.title}</p>
+                        <p style={{ fontSize: '13px', color: C.body }}>{c.desc}</p>
                       </div>
-                      <span className="flex-shrink-0 text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-lg font-semibold border border-blue-100">
-                        {c.tag}
-                      </span>
+                      <span style={{ flexShrink: 0, fontSize: '11px', background: '#EEF2FF', color: C.blue, padding: '4px 10px', borderRadius: '6px', fontWeight: 700, whiteSpace: 'nowrap' }}>{c.tag}</span>
                     </div>
-                    <div className="mt-4 flex items-center gap-1.5">
+                    {/* Stars */}
+                    <div style={{ display: 'flex', gap: 3, marginTop: 12 }}>
                       {Array.from({ length: 5 }).map((_, j) => (
-                        <svg key={j} className="w-3.5 h-3.5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <svg key={j} width="13" height="13" fill="#FBC02D" viewBox="0 0 20 20">
                           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                         </svg>
                       ))}
-                      <span className="text-xs text-slate-400 ml-1">만족도 5점</span>
+                      <span style={{ fontSize: '11px', color: C.body, marginLeft: 4 }}>만족도 5점</span>
                     </div>
                   </div>
                 </div>
@@ -565,191 +463,71 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ────────────────────────────────────────────────────────
-          7. REVIEWS
-      ──────────────────────────────────────────────────────── */}
-      <section id="reviews" className="py-20 md:py-28 bg-gradient-to-br from-blue-50 to-sky-100 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          <ScrollReveal className="text-center mb-14">
-            <span className="section-badge">REVIEWS</span>
-            <h2 className="section-title">
-              검증된 청소하임,{' '}
-              <span className="relative inline-block">
-                100% 실제 후기
-                <span className="absolute -bottom-1 left-0 right-0 h-3 bg-yellow-300/50 -z-10 rounded" />
-              </span>
-            </h2>
-            <p className="section-sub max-w-xl mx-auto">실제 고객님들의 생생한 후기를 확인하세요</p>
-          </ScrollReveal>
-
-          <div className="grid md:grid-cols-3 gap-5 md:gap-6">
-            {reviews.map((r, i) => (
-              <ScrollReveal key={i} delay={i * 120}>
-                <div className="bg-white rounded-2xl p-7 shadow-sm hover:shadow-xl border border-blue-100 hover:border-blue-200 transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
-                  {/* Stars */}
-                  <div className="flex gap-0.5 mb-4">
-                    {Array.from({ length: r.rating }).map((_, j) => (
-                      <svg key={j} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                      </svg>
-                    ))}
-                  </div>
-
-                  <p className="text-slate-700 leading-relaxed text-[15px] flex-1 mb-6">"{r.text}"</p>
-
-                  <div className="pt-5 border-t border-slate-100 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm">
-                        {r.name[0]}
-                      </div>
-                      <div>
-                        <p className="font-bold text-slate-900 text-sm">{r.name}</p>
-                        <p className="text-xs text-slate-400">{r.area}</p>
-                      </div>
-                    </div>
-                    <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg font-semibold whitespace-nowrap">
-                      {r.service}
-                    </span>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ────────────────────────────────────────────────────────
-          7. CONTACT
-      ──────────────────────────────────────────────────────── */}
-      <section id="contact" className="py-20 md:py-28 bg-gradient-to-br from-blue-700 to-blue-900 overflow-hidden relative">
-        {/* background pattern */}
-        <div className="absolute inset-0 opacity-[0.04]" style={{backgroundImage:'radial-gradient(circle, white 1px, transparent 1px)',backgroundSize:'32px 32px'}} />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-
-            {/* Left */}
-            <ScrollReveal from="left">
-              <span className="inline-block px-4 py-1.5 bg-white/15 text-blue-100 rounded-full text-sm font-semibold tracking-widest uppercase mb-5">
-                CONTACT
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-5">
-                <span className="text-yellow-300">믿을 수 있는</span><br />
-                청소 전문가와 상담하세요
+      {/* ═══════════════════════════════════════════════════════
+          8. CONTACT
+      ═══════════════════════════════════════════════════════ */}
+      <section
+        id="contact"
+        style={{ background: C.contactBg, padding: '100px 20px', overflow: 'hidden' }}
+      >
+        <ScrollReveal className="max-w-[900px] mx-auto">
+          <div style={{ background: '#fff', borderRadius: '8px', padding: 'clamp(40px,6vw,80px) clamp(24px,7vw,80px)', boxShadow: '0 12px 48px rgba(0,0,0,0.12)' }}>
+            {/* Heading */}
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <h2 style={{ fontSize: 'clamp(26px, 4vw, 46px)', fontWeight: 700, color: C.orange, lineHeight: 1.2, marginBottom: '12px' }}>
+                믿을 수 있는 청소전문가
               </h2>
-              <p className="text-blue-100 text-lg leading-relaxed mb-10">
-                청소 고민이 있으시다면 바로 연락 주세요.<br />
-                대표가 직접 상담하고 가장 적합한 서비스를 안내해 드립니다.
-              </p>
+              <h3 style={{ fontSize: 'clamp(18px, 2.5vw, 34px)', fontWeight: 600, color: C.dark, lineHeight: 1.35 }}>
+                지금 바로, 청소하임과 직접 상담해보세요
+              </h3>
+            </div>
 
-              <div className="space-y-4 mb-10">
-                <a href="tel:010-0000-0000" className="flex items-center gap-4 p-4 bg-white/10 hover:bg-white/15 rounded-xl transition-colors cursor-pointer group">
-                  <div className="w-12 h-12 bg-white/15 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-white/25 transition-colors">
-                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-blue-200 text-xs font-medium uppercase tracking-wide">전화 문의</p>
-                    <p className="text-white text-xl font-bold">010-0000-0000</p>
-                  </div>
-                </a>
-                <div className="flex items-center gap-4 p-4 bg-white/10 rounded-xl">
-                  <div className="w-12 h-12 bg-white/15 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-blue-200 text-xs font-medium uppercase tracking-wide">운영 시간</p>
-                    <p className="text-white font-bold">평일 · 주말 08:00 – 20:00</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Trust list */}
-              <div className="p-5 bg-white/10 rounded-2xl border border-white/20">
-                <p className="text-blue-200 text-xs font-bold uppercase tracking-widest mb-3">청소하임이 약속합니다</p>
-                <ul className="space-y-2.5">
-                  {[
-                    '100% 직영팀 시공 — 하청 없음',
-                    '대표 직접 현장 방문 견적',
-                    '시공 후 만족 보장',
-                    '배상책임보험 가입',
-                  ].map(item => (
-                    <li key={item} className="flex items-center gap-2.5 text-white text-sm">
-                      <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
-                      </svg>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </ScrollReveal>
-
-            {/* Right — Form */}
-            <ScrollReveal from="right" delay={150}>
-              <div className="bg-white rounded-2xl shadow-2xl p-7 md:p-8">
-                <h3 className="text-xl font-bold text-slate-900 mb-1">무료 상담 신청</h3>
-                <p className="text-slate-500 text-sm mb-7">입력하신 연락처로 빠르게 연락드리겠습니다.</p>
-                <ContactForm />
-              </div>
-            </ScrollReveal>
+            <ContactForm />
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
-      {/* ────────────────────────────────────────────────────────
-          8. FOOTER
-      ──────────────────────────────────────────────────────── */}
-      <footer className="bg-slate-900 text-slate-400 py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-10 items-start pb-10 border-b border-slate-700/60">
+      {/* ═══════════════════════════════════════════════════════
+          9. FOOTER
+      ═══════════════════════════════════════════════════════ */}
+      <footer style={{ background: C.footer, padding: '50px 0 0' }}>
+        <div className="max-w-[1140px] mx-auto px-5">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', justifyContent: 'space-between', paddingBottom: '40px' }}>
 
-            <div>
-              <div className="mb-5">
-                <Image
-                  src="/logo.png"
-                  alt="청소하임 로고"
-                  width={160}
-                  height={56}
-                  className="h-11 w-auto object-contain brightness-0 invert opacity-90"
-                />
-              </div>
-              <p className="text-sm leading-relaxed max-w-xs text-slate-500">
-                꼼꼼한 시공부터 사후관리까지,<br />
-                직접 운영팀이 책임지고 도와드립니다.
+            {/* Brand */}
+            <div style={{ maxWidth: '480px' }}>
+              <Image
+                src="/logo.png"
+                alt="청소하임"
+                width={200}
+                height={60}
+                className="h-12 w-auto object-contain brightness-0 invert mb-4"
+              />
+              <p style={{ fontSize: '15px', color: C.body, lineHeight: 1.7 }}>
+                꼼꼼한 시공부터 사후관리까지 직접 운영팀이 책임지고 도와드립니다.
               </p>
             </div>
 
-            <div className="text-sm space-y-2.5">
-              <p className="text-white font-semibold text-base mb-4">사업자 정보</p>
+            {/* Business info */}
+            <div>
               {[
-                { label: '대표자',          value: '김진영' },
-                { label: '사업자등록번호',  value: '000-00-00000' },
-                { label: '문의전화',        value: '010-0000-0000', href: 'tel:010-0000-0000' },
-                { label: '운영시간',        value: '평일·주말 08:00 – 20:00' },
-              ].map(item => (
-                <p key={item.label}>
-                  <span className="text-slate-500 w-28 inline-block">{item.label}</span>
-                  {item.href
-                    ? <a href={item.href} className="text-slate-300 hover:text-white transition-colors">{item.value}</a>
-                    : <span className="text-slate-300">{item.value}</span>
-                  }
+                ['대표자', '김진영'],
+                ['사업자등록번호', '000-00-00000'],
+                ['문의전화', '010-0000-0000'],
+                ['운영시간', '평일·주말 08:00–20:00'],
+              ].map(([k, v]) => (
+                <p key={k} style={{ fontSize: '15px', color: C.body, lineHeight: 1.85 }}>
+                  <span style={{ display: 'inline-block', width: '120px' }}>{k}</span>
+                  <span style={{ color: '#9AA5B0' }}>{v}</span>
                 </p>
               ))}
             </div>
           </div>
+        </div>
 
-          <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-600">
-            <p>© 2025 청소하임. All rights reserved.</p>
-            <nav className="flex gap-5">
-              <a href="#" className="hover:text-slate-400 transition-colors">개인정보처리방침</a>
-              <a href="#" className="hover:text-slate-400 transition-colors">이용약관</a>
-            </nav>
-          </div>
+        {/* Copyright bar */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '18px 20px', textAlign: 'center' }}>
+          <p style={{ fontSize: '14px', color: C.body }}>All right Reserved — 청소하임</p>
         </div>
       </footer>
     </>
