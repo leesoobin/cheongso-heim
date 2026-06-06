@@ -40,11 +40,20 @@ export default function HeroStats() {
   return (
     <>
       {STATS.map((s, i) => (
-        <div key={i} style={{ textAlign: 'center', padding: '0 24px', borderRight: i < STATS.length - 1 ? '1px solid rgba(255,255,255,0.25)' : 'none' }}>
-          <p style={{ fontSize: 'clamp(22px, 2.5vw, 30px)', fontWeight: 600, color: '#fff', lineHeight: 1.2 }}>
+        <div
+          key={i}
+          style={{
+            textAlign: 'center',
+            padding: '0 14px',
+            borderRight: i < STATS.length - 1 ? '1px solid rgba(255,255,255,0.25)' : 'none',
+            minWidth: 0,
+            flexShrink: 1,
+          }}
+        >
+          <p style={{ fontSize: 'clamp(17px, 2.5vw, 30px)', fontWeight: 600, color: '#fff', lineHeight: 1.2, whiteSpace: 'nowrap' }}>
             <Counter target={s.value} suffix={s.suffix} />
           </p>
-          <p style={{ fontSize: '15px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', marginTop: '4px' }}>{s.label}</p>
+          <p style={{ fontSize: 'clamp(11px, 1.3vw, 15px)', fontWeight: 500, color: 'rgba(255,255,255,0.85)', marginTop: '4px', whiteSpace: 'nowrap' }}>{s.label}</p>
         </div>
       ))}
     </>

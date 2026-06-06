@@ -64,7 +64,7 @@ const PREMIUM = [
   {
     title: '벽면 집진 시공',
     desc: '공식 헤파필터 장착 컬비 장비로 벽면부터 천장까지 미세분진을 완전 제거합니다. 눈에 보이지 않는 먼지까지 책임집니다.',
-    img: 'https://images.unsplash.com/photo-1484154218791-d3b6498ca4a1?auto=format&fit=crop&w=700&q=80',
+    img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=700&q=80',
   },
 ]
 
@@ -91,8 +91,8 @@ const CASES = [
   { title: '주방 기름때·탄화물 제거', tag: '주방 청소',  desc: '환기구 세척·인덕션 분해 후 재조립 완료',    img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&q=80' },
   { title: '욕실 물때·곰팡이 완전 제거', tag: '욕실 청소', desc: '줄눈 곰팡이·유리 물때 세척 완료',          img: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=900&q=80' },
   { title: '사무실 50평 바닥 광택',  tag: '사무실 청소', desc: '바닥 코팅 전처리·헤비 UV 광택 시공',        img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80' },
-  { title: '에어컨 내부 곰팡이 세척', tag: '에어컨 청소', desc: '필터·코일 분리 세척, 균·냄새 완전 제거',    img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=80' },
-  { title: '거실·창문 전체 청소',    tag: '가정 청소',   desc: '창문 안팎·블라인드·몰딩 구석 세척 완료',    img: 'https://images.unsplash.com/photo-1484154218791-d3b6498ca4a1?auto=format&fit=crop&w=900&q=80' },
+  { title: '에어컨 내부 곰팡이 세척', tag: '에어컨 청소', desc: '필터·코일 분리 세척, 균·냄새 완전 제거',    img: 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=900&q=80' },
+  { title: '거실·창문 전체 청소',    tag: '가정 청소',   desc: '창문 안팎·블라인드·몰딩 구석 세척 완료',    img: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80' },
 ]
 
 // ── ICON HELPERS ────────────────────────────────────────────
@@ -125,11 +125,11 @@ export default function Home() {
       <section id="home" style={{ position: 'relative', minHeight: '825px', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
         <HeroSlideshow />
 
-        <div className="relative z-20 w-full max-w-[1140px] mx-auto px-5" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
+        <div className="relative z-20 w-full max-w-[1140px] mx-auto px-5 text-center" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
 
           {/* Badge */}
           <ScrollReveal delay={0}>
-            <p style={{ fontSize: '24px', fontWeight: 500, color: 'rgba(248,252,252,0.9)', marginBottom: '12px' }}>
+            <p style={{ fontSize: 'clamp(16px, 2vw, 24px)', fontWeight: 500, color: 'rgba(248,252,252,0.9)', marginBottom: '12px' }}>
               청소전문업체, 청소하임
             </p>
           </ScrollReveal>
@@ -139,30 +139,32 @@ export default function Home() {
             <h1 style={{ fontSize: 'clamp(28px, 4vw, 47px)', fontWeight: 600, color: C.lime, lineHeight: 1.25, marginBottom: '8px' }}>
               청소하임
             </h1>
-            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 47px)', fontWeight: 600, color: '#fff', lineHeight: 1.3, marginBottom: '14px' }}>
+            <h2 style={{ fontSize: 'clamp(22px, 3.5vw, 47px)', fontWeight: 600, color: '#fff', lineHeight: 1.3, marginBottom: '14px' }}>
               "신뢰를 바탕으로 운영합니다"
             </h2>
-            <p style={{ fontSize: 'clamp(15px, 1.8vw, 22px)', fontWeight: 500, color: 'rgba(248,252,252,0.85)', marginBottom: '40px' }}>
+            <p style={{ fontSize: 'clamp(14px, 1.8vw, 22px)', fontWeight: 500, color: 'rgba(248,252,252,0.85)', marginBottom: '36px' }}>
               대표책임운영 · 투명한 시공 · 합리적인 금액
             </p>
           </ScrollReveal>
 
           {/* Stats box */}
           <ScrollReveal delay={240}>
-            <div style={{ background: 'rgba(51,93,128,0.5)', borderRadius: '24px', padding: '24px 10px', display: 'inline-flex', gap: '40px', marginBottom: '40px', flexWrap: 'wrap' }}>
+            <div className="inline-flex flex-nowrap justify-center" style={{ background: 'rgba(51,93,128,0.5)', borderRadius: '24px', padding: '20px 8px', marginBottom: '36px', minWidth: 0 }}>
               <HeroStats />
             </div>
           </ScrollReveal>
 
           {/* CTA */}
           <ScrollReveal delay={360}>
-            <a
-              href="#contact"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: C.blue, color: '#fff', padding: '15px 40px', borderRadius: '23px', fontSize: '18px', fontWeight: 500, textDecoration: 'none', boxShadow: '0 4px 20px rgba(49,89,188,0.4)' }}
-              className="hover:opacity-90 transition-opacity"
-            >
-              바로 상담하기
-            </a>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <a
+                href="#contact"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: C.blue, color: '#fff', padding: '15px 40px', borderRadius: '23px', fontSize: '18px', fontWeight: 500, textDecoration: 'none', boxShadow: '0 4px 20px rgba(49,89,188,0.4)' }}
+                className="hover:opacity-90 transition-opacity"
+              >
+                바로 상담하기
+              </a>
+            </div>
           </ScrollReveal>
         </div>
       </section>
