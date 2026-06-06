@@ -584,11 +584,11 @@ export default function Home() {
             <div>
               <div className="mb-4">
                 <Image
-                  src="/logo.jpeg"
+                  src="/logo.png"
                   alt="청소하임 로고"
-                  width={140}
-                  height={48}
-                  className="h-10 w-auto object-contain brightness-0 invert"
+                  width={160}
+                  height={56}
+                  className="h-11 w-auto object-contain brightness-0 invert"
                 />
               </div>
               <p className="text-sm leading-relaxed max-w-xs">

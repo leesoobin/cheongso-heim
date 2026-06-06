@@ -41,11 +41,11 @@ export default function Header() {
           aria-label="청소하임 홈"
         >
           <Image
-            src="/logo.jpeg"
+            src="/logo.png"
             alt="청소하임 로고"
-            width={140}
-            height={48}
-            className="h-10 w-auto object-contain"
+            width={160}
+            height={56}
+            className="h-11 w-auto object-contain"
             priority
           />
         </button>
