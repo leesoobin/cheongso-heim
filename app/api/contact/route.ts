@@ -55,7 +55,7 @@ export async function POST(request: Request) {
 
     const { error } = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: ['dorlqlsl@naver.com'],
+      to: ['mindyoung0526@gmail.com'],
       subject: `[청소하임] 새 문의 접수 - ${name} (${phone})`,
       html: htmlBody,
     })
