@@ -35,7 +35,7 @@ export default function Header() {
             alt="청소하임"
             width={40}
             height={21}
-            className="w-9 h-8 sm:w-10 sm:h-9 object-fill"
+            className="w-9 sm:w-10 h-auto object-contain"
             style={{ filter: 'brightness(0) invert(1)' }}
             priority
           />
