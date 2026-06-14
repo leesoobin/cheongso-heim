@@ -1,25 +1,20 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 
 const navLinks = [
-  { href: '#about',    label: '회사소개' },
-  { href: '#services', label: '청소서비스' },
-  { href: '#reviews',  label: '고객후기' },
-  { href: '#cases',    label: '서비스사례' },
+  { href: '#home',     label: '메인' },
+  { href: '#about',    label: '청소하임 소개' },
+  { href: '#cases',    label: '시공 사례' },
+  { href: '#reviews',  label: '고객 후기' },
+  { href: '#services', label: '서비스 안내' },
+  { href: '#premium',  label: '프리미엄 서비스' },
+  { href: '#contact',  label: '무료 상담 신청' },
 ]
 
 export default function Header() {
-  const [open, setOpen]       = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60)
-    fn()
-    window.addEventListener('scroll', fn, { passive: true })
-    return () => window.removeEventListener('scroll', fn)
-  }, [])
+  const [open, setOpen] = useState(false)
 
   const go = (href: string) => {
     setOpen(false)
@@ -28,62 +23,48 @@ export default function Header() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-      style={{
-        background: scrolled ? '#fff' : 'transparent',
-        boxShadow: scrolled ? '0 2px 16px rgba(0,0,0,0.08)' : 'none',
-        height: '80px',
-      }}
+      className="fixed top-0 left-0 right-0 z-50"
+      style={{ background: 'rgba(6,16,34,0.55)', backdropFilter: 'blur(8px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
     >
-      <div className="max-w-[1200px] mx-auto px-5 h-full flex items-center justify-between">
+      <div className="max-w-[1280px] mx-auto px-5 flex items-center justify-between" style={{ height: '76px' }}>
 
         {/* Logo */}
-        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex-shrink-0">
+        <button onClick={() => go('#home')} className="flex items-center gap-2 flex-shrink-0">
           <Image
-            src="/logo.png"
-            alt="청소하임 로고"
-            width={180}
-            height={60}
-            className="h-12 w-auto object-contain"
-            style={{ filter: scrolled ? 'none' : 'brightness(0) invert(1)' }}
+            src="/logo-icon.png"
+            alt="청소하임"
+            width={40}
+            height={21}
+            className="w-9 sm:w-10 h-auto object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
             priority
           />
+          <div className="flex flex-col items-start leading-tight">
+            <span style={{ fontSize: 'clamp(17px, 2vw, 21px)', fontWeight: 800, color: '#fff' }}>청소하임</span>
+            <span className="hidden sm:block" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.55)', whiteSpace: 'nowrap' }}>
+              대표가 직접 관리하는 100% 직영 청소업체
+            </span>
+          </div>
         </button>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-2">
+        <nav className="hidden lg:flex items-center gap-1">
           {navLinks.map(link => (
             <button
               key={link.href}
               onClick={() => go(link.href)}
-              className="px-4 py-2 font-medium transition-colors hover:opacity-70"
-              style={{
-                fontSize: '18px',
-                color: scrolled ? '#070707' : '#fff',
-              }}
+              className="px-3 py-2 font-medium transition-colors hover:text-white whitespace-nowrap"
+              style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)' }}
             >
               {link.label}
             </button>
           ))}
-          <button
-            onClick={() => go('#contact')}
-            className="ml-4 font-semibold transition-all hover:opacity-90"
-            style={{
-              background: '#3159BC',
-              color: '#fff',
-              padding: '10px 28px',
-              borderRadius: '24px',
-              fontSize: '16px',
-            }}
-          >
-            무료 상담
-          </button>
         </nav>
 
-        {/* Mobile hamburger */}
+        {/* Hamburger (all sizes) */}
         <button
           onClick={() => setOpen(o => !o)}
-          className="md:hidden p-2"
+          className="p-2"
           aria-label="메뉴"
         >
           <div className="w-6 h-[18px] flex flex-col justify-between">
@@ -92,7 +73,7 @@ export default function Header() {
                 key={i}
                 className="block h-0.5 rounded transition-all duration-200"
                 style={{
-                  background: scrolled ? '#070707' : '#fff',
+                  background: '#fff',
                   transform: open
                     ? i===0 ? 'rotate(45deg) translateY(8px)'
                     : i===1 ? 'scaleX(0)'
@@ -105,26 +86,19 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Dropdown drawer */}
       {open && (
-        <div className="md:hidden bg-white border-t border-slate-100 shadow-lg">
+        <div style={{ background: 'rgba(8,19,40,0.98)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
           {navLinks.map(link => (
             <button
               key={link.href}
               onClick={() => go(link.href)}
-              className="w-full text-left px-6 py-4 text-[#070707] font-medium border-b border-slate-50 hover:bg-slate-50 transition-colors"
-              style={{ fontSize: '16px' }}
+              className="w-full text-left px-6 py-4 font-medium border-b transition-colors hover:bg-white/5"
+              style={{ fontSize: '16px', color: 'rgba(255,255,255,0.9)', borderColor: 'rgba(255,255,255,0.06)' }}
             >
               {link.label}
             </button>
           ))}
-          <button
-            onClick={() => go('#contact')}
-            className="w-full py-4 text-white font-bold text-center"
-            style={{ background: '#3159BC' }}
-          >
-            무료 상담 신청
-          </button>
         </div>
       )}
     </header>

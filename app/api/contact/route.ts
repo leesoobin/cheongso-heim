@@ -5,11 +5,11 @@ export async function POST(request: Request) {
   const resend = new Resend(process.env.RESEND_API_KEY)
   try {
     const body = await request.json()
-    const { name, phone, email, message } = body as {
-      name: string; phone: string; email?: string; message: string
+    const { name, phone, email, serviceType, spaceType, date, message } = body as {
+      name: string; phone: string; email?: string; serviceType: string; spaceType?: string; date?: string; message: string
     }
 
-    if (!name?.trim() || !phone?.trim() || !message?.trim()) {
+    if (!name?.trim() || !phone?.trim() || !serviceType?.trim() || !message?.trim()) {
       return NextResponse.json({ error: '필수 항목을 입력해주세요.' }, { status: 400 })
     }
 
@@ -38,7 +38,19 @@ export async function POST(request: Request) {
                 <td style="padding:14px 16px;border-bottom:1px solid #F1F5F9;color:#1E293B;">${email ? escapeHtml(email) : '미입력'}</td>
               </tr>
               <tr>
-                <td style="padding:14px 16px;background:#EFF6FF;color:#1E40AF;font-weight:700;vertical-align:top;">문의사항</td>
+                <td style="padding:14px 16px;background:#EFF6FF;color:#1E40AF;font-weight:700;">서비스 종류</td>
+                <td style="padding:14px 16px;border-bottom:1px solid #F1F5F9;color:#1E293B;">${escapeHtml(serviceType)}</td>
+              </tr>
+              <tr>
+                <td style="padding:14px 16px;background:#EFF6FF;color:#1E40AF;font-weight:700;">건물/공간 유형</td>
+                <td style="padding:14px 16px;border-bottom:1px solid #F1F5F9;color:#1E293B;">${spaceType ? escapeHtml(spaceType) : '미입력'}</td>
+              </tr>
+              <tr>
+                <td style="padding:14px 16px;background:#EFF6FF;color:#1E40AF;font-weight:700;">희망 날짜</td>
+                <td style="padding:14px 16px;border-bottom:1px solid #F1F5F9;color:#1E293B;">${date ? escapeHtml(date) : '미입력'}</td>
+              </tr>
+              <tr>
+                <td style="padding:14px 16px;background:#EFF6FF;color:#1E40AF;font-weight:700;vertical-align:top;">문의 내용</td>
                 <td style="padding:14px 16px;color:#1E293B;line-height:1.7;">${escapeHtml(message).replace(/\n/g, '<br>')}</td>
               </tr>
             </table>

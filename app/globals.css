@@ -8,6 +8,7 @@ body {
   font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
   word-break: keep-all;
   overflow-wrap: break-word;
+  background: #0A1830;
 }
 
 /* ── Scroll Reveal ── */
@@ -28,18 +29,27 @@ body {
 .kb-in  { animation: kb-in  10s ease-out forwards; }
 .kb-out { animation: kb-out 10s ease-out forwards; }
 
-/* ── Section badges ── */
-.badge-orange {
+/* ── Navy section badge (with underline tick) ── */
+.badge-navy {
   display: inline-block;
-  font-size: 16px; font-weight: 600; color: #F46D3D;
-  letter-spacing: 0.02em; margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #6FA8F5;
+  letter-spacing: 0.25em;
+  margin-bottom: 14px;
+  position: relative;
+  padding-bottom: 14px;
 }
-.badge-blue {
-  display: inline-flex; align-items: center;
-  border: 1.5px solid #3159BC; color: #3159BC;
-  font-size: 13px; font-weight: 700;
-  padding: 4px 14px; border-radius: 4px;
-  letter-spacing: 0.08em; margin-bottom: 20px;
+.badge-navy::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 2px;
+  background: #6FA8F5;
+  opacity: 0.6;
 }
 
 @media (prefers-reduced-motion: reduce) {
