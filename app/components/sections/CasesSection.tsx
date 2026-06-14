@@ -10,7 +10,7 @@ const CASES = [
 
 export default function CasesSection() {
   return (
-    <section id="cases" style={{ background: C.navy, padding: 'clamp(72px,10vw,120px) 0' }}>
+    <section id="cases" style={{ background: C.navy, padding: 'clamp(48px,7vw,88px) 0 clamp(72px,10vw,120px)' }}>
       <div className="max-w-[1140px] mx-auto px-6 sm:px-10">
 
         <ScrollReveal className="text-center mb-10 sm:mb-14">

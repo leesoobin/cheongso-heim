@@ -32,7 +32,7 @@ export default function HeroSection() {
         }} />
         <div style={{
           position: 'absolute', inset: 0,
-          background: `linear-gradient(180deg, rgba(5,15,34,0.35) 0%, rgba(5,15,34,0.05) 28%, rgba(5,15,34,0.65) 100%)`,
+          background: `linear-gradient(180deg, rgba(5,15,34,0.35) 0%, rgba(5,15,34,0.05) 28%, rgba(5,15,34,0.65) 80%, ${C.navy} 100%)`,
         }} />
       </div>
 

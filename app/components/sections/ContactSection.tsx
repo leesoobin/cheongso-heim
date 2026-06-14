@@ -54,12 +54,12 @@ export default function ContactSection() {
       </div>
 
       {/* Body: navy */}
-      <div style={{ background: C.navy, padding: '0 0 clamp(72px,10vw,120px)' }}>
+      <div style={{ background: C.navy, padding: 'clamp(24px,3.5vw,40px) 0 clamp(72px,10vw,120px)' }}>
         <div className="max-w-[1140px] mx-auto px-6 sm:px-10">
 
           {/* Feature row */}
           <ScrollReveal>
-            <div className="grid grid-cols-4" style={{ background: C.navyCard, border: `1px solid ${C.navyBorder}`, borderRadius: '14px', padding: 'clamp(18px,2.5vw,28px) clamp(4px,2vw,16px)', marginTop: 'clamp(24px,3.5vw,40px)', marginBottom: 'clamp(40px,6vw,72px)' }}>
+            <div className="grid grid-cols-4" style={{ background: C.navyCard, border: `1px solid ${C.navyBorder}`, borderRadius: '14px', padding: 'clamp(18px,2.5vw,28px) clamp(4px,2vw,16px)', marginBottom: 'clamp(40px,6vw,72px)' }}>
               {FEATURES.map((f, i) => {
                 const Icon = f.icon
                 return (

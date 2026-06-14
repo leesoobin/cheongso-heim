@@ -56,11 +56,11 @@ export default function PremiumSection() {
       </div>
 
       {/* Body: navy */}
-      <div style={{ background: C.navy, padding: '0 0 clamp(72px,10vw,120px)' }}>
+      <div style={{ background: C.navy, padding: 'clamp(28px,4vw,48px) 0 clamp(72px,10vw,120px)' }}>
         <div className="max-w-[1140px] mx-auto px-6 sm:px-10">
 
           {/* Care cards */}
-          <div className="grid sm:grid-cols-2 gap-3 sm:gap-6" style={{ marginTop: 'clamp(28px,4vw,48px)', marginBottom: 'clamp(40px,6vw,72px)' }}>
+          <div className="grid sm:grid-cols-2 gap-3 sm:gap-6" style={{ marginBottom: 'clamp(40px,6vw,72px)' }}>
             {CARES.map((c, i) => {
               const Icon = c.icon
               return (

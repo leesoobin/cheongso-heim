@@ -12,7 +12,7 @@ const ITEMS = [
 
 export default function AboutSection() {
   return (
-    <section id="about" style={{ background: C.navy, padding: 'clamp(72px,10vw,120px) 0' }}>
+    <section id="about" style={{ background: C.navy, padding: 'clamp(72px,10vw,120px) 0 clamp(48px,7vw,88px)' }}>
       <div className="max-w-[1140px] mx-auto px-6 sm:px-10">
 
         <ScrollReveal className="text-center mb-10 sm:mb-14">

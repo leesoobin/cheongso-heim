@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" className={notoSansKR.variable}>
-      <body className="font-sans bg-white text-slate-800 antialiased">
+      <body className="font-sans text-slate-800 antialiased">
         {children}
       </body>
     </html>
