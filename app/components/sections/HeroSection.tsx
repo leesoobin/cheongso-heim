@@ -6,8 +6,8 @@ import { C } from '../../theme'
 const MERITS = [
   { icon: PersonIcon, title: '대표 직접 관리',   lines: ['상담부터 관리까지', '직접 책임'] },
   { icon: TeamIcon,   title: '100% 직영팀',     lines: ['하청 없이 검증된', '직영팀 운영'] },
-  { icon: LeafIcon,   title: '친환경 세제 사용', lines: ['인체에 무해한 세제로', '안심 청소'] },
-  { icon: ShieldIcon, title: '영업배상책임보험', lines: ['시공 중 발생하는', '모든 사고 보장'] },
+  { icon: LeafIcon,   title: '친환경 세제',     lines: ['인체에 무해한 세제로', '안심 청소'] },
+  { icon: ShieldIcon, title: '책임 보험',       lines: ['시공 중 발생하는', '모든 사고 보장'] },
 ]
 
 export default function HeroSection() {
