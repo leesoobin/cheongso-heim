@@ -17,7 +17,7 @@ const CARES = [
 const FEATURES = [
   { icon: LeafIcon,   title: '친환경 약품',     lines: ['인체에 무해한', '친환경 약품 사용'] },
   { icon: VacuumIcon, title: '전문 장비 사용',   lines: ['고성능 전문 장비로', '더 깨끗하게'] },
-  { icon: ShieldIcon, title: '영업배상책임보험', lines: ['만일의 사고에도', '안전하게 보장'] },
+  { icon: ShieldIcon, title: '책임 보험',       lines: ['만일의 사고에도', '안전하게 보장'] },
   { icon: HeadsetIcon,title: '사후관리 지원',   lines: ['청소 후에도', '지속적인 관리 지원'] },
 ]
 
