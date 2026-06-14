@@ -12,10 +12,10 @@ const MERITS = [
 
 export default function HeroSection() {
   return (
-    <section id="home" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    <section id="home" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
 
       {/* Background photo + navy overlay */}
-      <div style={{ position: 'absolute', inset: 0 }}>
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
         <div className="kb-in" style={{ position: 'absolute', inset: 0 }}>
           <Image
             src="/images/hero-bg.jpg"
