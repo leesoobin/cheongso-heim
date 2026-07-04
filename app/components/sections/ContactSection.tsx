@@ -12,7 +12,7 @@ const FEATURES = [
 ]
 
 const INFO = [
-  { icon: PhoneIcon, title: '대표번호 010-0000-0000', desc: '평일 09:00 - 18:00' },
+  { icon: PhoneIcon, title: '대표번호 010-7182-6371', desc: '평일 09:00 - 18:00' },
   { icon: null,      title: '카카오톡 상담',          desc: '빠른 실시간 상담' },
   { icon: ChatRightIcon, title: '24시간 문의 접수',   desc: '상담 후 빠른 연락드리겠습니다.' },
 ]
